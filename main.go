@@ -8,4 +8,6 @@ func main() {
 	test := "First test"
 
 	fmt.Println(test)
+
+	new_test := "Sec test"
 }
