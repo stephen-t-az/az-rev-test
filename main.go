@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	fmt.Println("Hello, World!")
@@ -9,5 +12,7 @@ func main() {
 
 	fmt.Println(test)
 
-	new_test := "Sec test"
+	env := os.Getenv("test")
+
+	fmt.Println(env)
 }
