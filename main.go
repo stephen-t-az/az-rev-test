@@ -15,4 +15,8 @@ func main() {
 	env := os.Getenv("test")
 
 	fmt.Println(env)
+
+	test2 := "sec test"
+
+	println(test2)
 }
