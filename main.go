@@ -8,15 +8,11 @@ import (
 func main() {
 	fmt.Println("Hello, World!")
 
-	test := "First test"
+	var testConfig map[string]string
 
-	fmt.Println(test)
+	fmt.Println("Setting up configuration...")
 
-	env := os.Getenv("test")
+	testConfig["env"] = os.Getenv("test")
 
-	fmt.Println(env)
-
-	test2 := "sec test"
-
-	println(test2)
+	fmt.Println(testConfig["env"])
 }
