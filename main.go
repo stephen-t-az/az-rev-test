@@ -14,5 +14,7 @@ func main() {
 
 	testConfig["env"] = os.Getenv("test")
 
+	println("test the review")
+
 	fmt.Println(testConfig["env"])
 }
