@@ -16,5 +16,7 @@ func main() {
 
 	println("test the review")
 
+	println("more test")
+
 	fmt.Println(testConfig["env"])
 }
