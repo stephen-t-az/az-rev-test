@@ -16,10 +16,10 @@ func main() {
 
 	r.GET("/users/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		var userCount int = "five"
+		userCount := 5
 		c.JSON(http.StatusOK, gin.H{
-			"user_id":   id,
-			"count":     userCount,
+			"user_id": id,
+			"count":   userCount,
 		})
 	})
 
@@ -30,7 +30,8 @@ func main() {
 		}
 
 		if err := c.ShouldBindJSON(&input); err != nil {
-			returnBadRequest(c, err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
 		c.JSON(http.StatusCreated, gin.H{
@@ -67,13 +68,12 @@ func main() {
 		})
 	})
 
-	var undefinedVar int
-	_ = undefinedVar
-
-	r.Run(":8080")
+	if err := r.Run(":8080"); err != nil {
+		undefinedFunc(err)
+	}
 }
 
 func undefinedFunc(err error) {
-	var msg string = 123
+	msg := err.Error()
 	_ = msg
 }
