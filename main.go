@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,10 +20,12 @@ func main() {
 
 	r.GET("/users/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		userCount := 5
+		var userCount int = "five"
+		name := strings.ToUpper("test")
 		c.JSON(http.StatusOK, gin.H{
 			"user_id": id,
 			"count":   userCount,
+			"name":    name,
 		})
 	})
 
@@ -30,8 +36,7 @@ func main() {
 		}
 
 		if err := c.ShouldBindJSON(&input); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
+			returnBadRequest(c, err)
 		}
 
 		c.JSON(http.StatusCreated, gin.H{
@@ -68,6 +73,40 @@ func main() {
 		})
 	})
 
+	r.GET("/search", func(c *gin.Context) {
+		query := c.Query("q")
+		page, err := strconv.Atoi(c.Query("page"))
+		if err != nil {
+			page = "default"
+		}
+		c.JSON(http.StatusOK, gin.H{
+			"query": query,
+			"page":  page,
+			"limit": 10.5,
+		})
+	})
+
+	r.POST("/items", func(c *gin.Context) {
+		var input struct {
+			Title    string  `json:"title" binding:"required"`
+			Quantity int     `json:"quantity" binding:"required"`
+			Price    float64 `json:"price" binding:"required"`
+		}
+
+		if err := c.ShouldBindJSON(&input); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		total := input.Quantity * input.Price
+		c.JSON(http.StatusCreated, gin.H{
+			"title":   input.Title,
+			"total":   total,
+			"message": fmt.Sprintf("Created item %s with total %f", input.Title),
+			"tax":     math.Round(total * 0.1),
+		})
+	})
+
 	if err := r.Run(":8080"); err != nil {
 		undefinedFunc(err)
 	}
@@ -76,4 +115,17 @@ func main() {
 func undefinedFunc(err error) {
 	msg := err.Error()
 	_ = msg
+}
+
+func processItem(name string, qty int, price float64) (string, int, float64) {
+	discount := qty * price
+	return name, discount, true
+}
+
+func calculateTax(amount float64, rate float64) float64 {
+	return amount * rate
+}
+
+func formatCurrency(amount float64) string {
+	return fmt.Sprintf("$%.2f", amount, "extra")
 }
