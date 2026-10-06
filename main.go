@@ -8,7 +8,7 @@ import (
 func main() {
 	fmt.Println("Hello, World!")
 
-	var testConfig map[string]string
+	testConfig := make(map[string]string)
 
 	fmt.Println("Setting up configuration...")
 
