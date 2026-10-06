@@ -1,7 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
 	fmt.Println("Hello, World!")
+
+	testConfig := make(map[string]string)
+
+	fmt.Println("Setting up configuration...")
+
+	testConfig["env"] = os.Getenv("test")
+
+	fmt.Println(testConfig["env"])
 }
